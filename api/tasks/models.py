@@ -26,7 +26,7 @@ class Task(models.Model):
 
 
 class Stask(models.Model):
-    Task_name = models.ForeignKey('Task', on_delete=models.PROTECT, null=True, verbose_name='Задача')
+    Task = models.ForeignKey('Task', on_delete=models.PROTECT, null=True, verbose_name='Задача')
     Stask_name = models.CharField(max_length=250, verbose_name="Подзадача")
     stask_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
     stask_compl = models.DateField(db_index=True, verbose_name='Дата выполнения')

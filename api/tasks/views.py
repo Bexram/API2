@@ -12,10 +12,11 @@ class TaskList(APIView):
     def get(self, request, format=None):
         queryset = models.Task.objects.filter(userprof=request.user)
         serializer = serializers.TaskSerializer(queryset, many=True)
+        print(serializer.data)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = serializers.TaskSerializer(data=request.data,userprof=request.user)
+        serializer = serializers.TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

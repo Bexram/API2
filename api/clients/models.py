@@ -2,7 +2,7 @@ from django.db import models
 from users.models import auth
 
 class clients(models.Model):
-    auth=models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Учетная запись', null=True)
+    auth=models.OneToOneField(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
     client_name = models.CharField(max_length=250, verbose_name="Краткое наименование")
     client_fullname = models.CharField(max_length=250, verbose_name="Полное наименование", null=True, blank=True)
     client_inn = models.CharField(max_length=250, verbose_name="ИНН", null=True, blank=True)

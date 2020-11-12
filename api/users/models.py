@@ -5,12 +5,12 @@ from django.db import models
 class auth(AbstractUser):
     role = ((1, 'Сотрудник'),
             (2, 'Клиент'))
-    status = models.IntegerField(verbose_name='Роль', choices=role, default=1)
+    status = models.IntegerField(verbose_name='Роль', choices=role, default=1, null=True,blank=True)
 
 
 # Create your models here.
 class UserProfile(models.Model):
-    auth = models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
+    auth = models.OneToOneField(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
     first_name = models.CharField(max_length=150, blank=True, null=True,verbose_name='Имя')
     last_name = models.CharField(max_length=150, blank=True, null=True,verbose_name='Фамилия')
     thirdname = models.CharField(verbose_name='Отчество', max_length=256, null=True, blank=True)
@@ -22,4 +22,15 @@ class UserProfile(models.Model):
 
 
     def __str__(self):
-        return self.last_name+' '+self.first_name+' '+self.thirdname
+        if self.first_name is not None:
+           if self.last_name is not None:
+              if self.thirdname is not None:
+                  return self.last_name + ' ' + self.first_name + ' ' + self.thirdname
+              else:
+                  return self.last_name + ' ' + self.first_name
+           else:
+               return self.first_name
+        else:
+            return self.auth
+
+

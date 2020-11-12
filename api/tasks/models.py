@@ -1,12 +1,12 @@
 from django.db import models
 from clients.models import object_contracts,clientobj
-from users.models import UserProfile
+from users.models import auth
 
 # Create your models here.
 class Task(models.Model):
-    userprof = models.ForeignKey(UserProfile, null=True, on_delete=models.PROTECT, verbose_name='Сотрудник',blank=True)
+    userprof = models.OneToOneField(auth, on_delete=models.PROTECT, verbose_name='Сотрудник')
     contract = models.ForeignKey(object_contracts, null=True, on_delete=models.CASCADE, verbose_name='Договор')
-    clientobj = models.ForeignKey(clientobj, null=True,on_delete=models.RESTRICT,verbose_name='Объект')
+    clientobj = models.ForeignKey(clientobj, null=True,on_delete=models.CASCADE,verbose_name='Объект')
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
     Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')

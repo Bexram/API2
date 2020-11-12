@@ -4,7 +4,7 @@ from .models import Task,Stask
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('__all__')
+        fields = ('userprof','contract','clientobj','Task_name','Task_other','task_published','task_compl','task_status')
 
 class StaskSerializer(serializers.ModelSerializer):
     class Meta:

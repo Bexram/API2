@@ -30,7 +30,6 @@ class authSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.UserProfile
         fields = ('id','auth','first_name','last_name','thirdname','position','telephone','passport','birthday')
@@ -38,5 +37,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 
-
+class GetUserSerializer(serializers.ModelSerializer):
+    userprofile=UserProfileSerializer()
+    class Meta:
+        model = models.auth
+        fields = ('id','username','status','is_active','userprofile')
 

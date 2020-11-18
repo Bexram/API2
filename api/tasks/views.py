@@ -7,6 +7,16 @@ from rest_framework.response import Response
 from . import serializers
 from . import models
 
+
+
+class TaskGetList(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        queryset = models.Task.objects.filter(userprof=request.user)
+        serializer = serializers.TaskGetSerializer(queryset, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+
 class TaskList(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
@@ -14,13 +24,6 @@ class TaskList(APIView):
         serializer = serializers.TaskSerializer(queryset, many=True)
         print(serializer.data)
         return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = serializers.TaskSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TaskDetail(APIView):
     def get_object(self, pk):

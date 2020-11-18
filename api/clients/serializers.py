@@ -15,9 +15,10 @@ class ObjectSerializer(serializers.ModelSerializer):
 
 
 class ContractSerializer(serializers.ModelSerializer):
+    clientobj=ObjectSerializer()
     class Meta:
         model = object_contracts
-        fields = ('__all__')
+        fields = ('id','clientobj')
 
 class ContactManSerializer(serializers.ModelSerializer):
     class Meta:

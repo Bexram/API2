@@ -59,10 +59,11 @@ class clientobj(models.Model):
 
 
 class object_contracts(models.Model):
-    clientobj = models.ManyToManyField(clientobj, verbose_name='Объект')
+    clientobj = models.ForeignKey(clientobj,null=True, on_delete=models.CASCADE,verbose_name='Объект')
     object_contracts = models.FileField(upload_to='contracts/', verbose_name="Договор", null=True,blank=True)
 
-
+    def __str__(self):
+        return str(self.clientobj)
 
     class Meta:
         verbose_name_plural = 'Договора'

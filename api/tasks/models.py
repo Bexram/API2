@@ -10,7 +10,7 @@ class Task(models.Model):
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
     Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
-    task_compl = models.DateField(db_index=True, verbose_name='Дата выполнения')
+    task_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
     task_status = models.BooleanField(verbose_name='Статус', null=0)
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Stask(models.Model):
     Task = models.ForeignKey('Task', on_delete=models.PROTECT, null=True, verbose_name='Задача')
     Stask_name = models.CharField(max_length=250, verbose_name="Подзадача")
     stask_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
-    stask_compl = models.DateField(db_index=True, verbose_name='Дата выполнения')
+    stask_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
     stask_status = models.BooleanField(verbose_name='Статус', null=0)
 
     def __str__(self):

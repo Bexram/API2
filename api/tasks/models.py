@@ -4,7 +4,7 @@ from users.models import auth
 
 # Create your models here.
 class Task(models.Model):
-    userprof = models.OneToOneField(auth, on_delete=models.PROTECT, verbose_name='Сотрудник')
+    userprof = models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Сотрудник')
     contract = models.ForeignKey(object_contracts, null=True, on_delete=models.CASCADE, verbose_name='Договор')
     clientobj = models.ForeignKey(clientobj, null=True,on_delete=models.CASCADE,verbose_name='Объект')
     Task_name = models.CharField(max_length=250, verbose_name="Задача")

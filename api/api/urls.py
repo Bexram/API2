@@ -24,9 +24,9 @@ from django.urls import path
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="CUBR API",
         default_version='v1',
-        description="Test description",
+        description="API для Владосика! Смотри сюда, пржеде чем меня спросить!!!",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
@@ -43,6 +43,7 @@ urlpatterns = [
     path('', urls.include('users.urls')),
     path('', urls.include('clients.urls')),
     path('', urls.include('tasks.urls')),
+    path('', urls.include('checklist.urls')),
     path('menu/', urls.include('menu.urls')),
     path('auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

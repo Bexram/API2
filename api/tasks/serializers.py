@@ -1,18 +1,24 @@
 from rest_framework import serializers
-from .models import Task,Stask
+from .models import Task, Stask
 from clients.serializers import ContractSerializer
+from users.serializers import GetUserSerializer
+
 
 class TaskGetSerializer(serializers.ModelSerializer):
-    contract=ContractSerializer()
+    contract = ContractSerializer()
+    userprof = GetUserSerializer()
+
     class Meta:
         model = Task
-        fields = ('id','contract','userprof','contract','clientobj','Task_name','Task_other','task_published','task_compl','task_status')
+        fields = (
+        'id', 'contract', 'userprof', 'Task_name', 'Task_other', 'task_published', 'task_compl', 'task_status')
+
 
 class TaskSerializer(serializers.ModelSerializer):
-    contract=ContractSerializer()
     class Meta:
         model = Task
         fields = ('__all__')
+
 
 class StaskSerializer(serializers.ModelSerializer):
     class Meta:

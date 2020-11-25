@@ -59,7 +59,7 @@ class clientobj(models.Model):
 
 
 class object_contracts(models.Model):
-    clientobj = models.ForeignKey(clientobj,null=True, on_delete=models.CASCADE,verbose_name='Объект')
+    clientobj = models.ForeignKey(clientobj,null=True, on_delete=models.CASCADE,verbose_name='Объект',related_name='clientobj')
     object_contracts = models.FileField(upload_to='contracts/', verbose_name="Договор", null=True,blank=True)
 
     def __str__(self):

@@ -17,38 +17,40 @@ class TaskGetList(APIView):
         print(serializer.data)
         return Response(serializer.data)
 
-class TaskList(APIView):
+class TaskList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, format=None):
-        queryset = models.Task.objects.filter(userprof=request.user)
-        serializer = serializers.TaskSerializer(queryset, many=True)
-        print(serializer.data)
-        return Response(serializer.data)
+    queryset = models.Task.objects.all()
+    serializer_class = serializers.TaskSerializer
 
-class TaskDetail(APIView):
-    def get_object(self, pk):
-        try:
-            return models.Task.objects.get(pk=pk)
-        except models.Task.DoesNotExist:
-            raise Http404
 
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = serializers.TaskSerializer(snippet)
-        return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = serializers.TaskSerializer(snippet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.Task.objects.all()
+    serializer_class = serializers.TaskSerializer
+    # def get_object(self, pk):
+    #     try:
+    #         return models.Task.objects.get(pk=pk)
+    #     except models.Task.DoesNotExist:
+    #         raise Http404
+    #
+    # def get(self, request, pk, format=None):
+    #     snippet = self.get_object(pk)
+    #     serializer = serializers.TaskSerializer(snippet)
+    #     return Response(serializer.data)
+    #
+    # def put(self, request, pk, format=None):
+    #     snippet = self.get_object(pk)
+    #     serializer = serializers.TaskSerializer(snippet, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #
+    # def delete(self, request, pk, format=None):
+    #     snippet = self.get_object(pk)
+    #     snippet.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class STaskList(generics.ListCreateAPIView):

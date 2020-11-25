@@ -6,10 +6,10 @@ from users.models import auth
 class Task(models.Model):
     userprof = models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Сотрудник')
     contract = models.ForeignKey(object_contracts, null=True, on_delete=models.CASCADE, verbose_name='Договор')
-    clientobj = models.ForeignKey(clientobj, null=True,on_delete=models.CASCADE,verbose_name='Объект')
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
     Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
+    task_start = models.DateTimeField(db_index=True, verbose_name='Дата начала задачи', null=True, blank=True)
     task_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
     task_status = models.BooleanField(verbose_name='Статус', null=0)
 

@@ -4,6 +4,11 @@ from rest_framework.permissions import IsAuthenticated
 from . import serializers
 from . import models
 
+class ClientGetList(generics.ListCreateAPIView):
+    #permission_classes = [IsAuthenticated]
+    queryset = models.clients.objects.all()
+    serializer_class = serializers.ClientGetProfileSerializer
+
 class ClientList(generics.ListCreateAPIView):
     #permission_classes = [IsAuthenticated]
     queryset = models.clients.objects.all()

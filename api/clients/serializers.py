@@ -1,5 +1,13 @@
 from rest_framework import serializers
 from . models import clients,clientobj,contact_man,object_contracts
+from users.serializers import authSerializer
+
+
+class ClientGetProfileSerializer(serializers.ModelSerializer):
+    auth=authSerializer()
+    class Meta:
+        model = clients
+        fields = ('id','auth','client_name','client_fullname','client_inn','client_ogrn','client_kpp','client_factaddr','client_juraddr','client_telephone','client_mail','client_site')
 
 
 

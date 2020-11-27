@@ -29,7 +29,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = models.UserProfile
         fields = ('id','auth','first_name','last_name','thirdname','position','telephone','passport','birthday')
         #fields = ('__all__')
-
+   
+    def patch(self,instance, validate_data):
+        instance.save()
+        return instance
 
 
 class GetUserSerializer(serializers.ModelSerializer):

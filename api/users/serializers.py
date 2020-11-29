@@ -20,6 +20,11 @@ class authSerializer(serializers.ModelSerializer):
             return user
 
     def patch(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            if attr == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, attr, value)       
         instance.save()
         return instance
 
@@ -27,10 +32,11 @@ class authSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        fields = ('id','auth','first_name','last_name','thirdname','position','telephone','passport','birthday')
+        fields = ('id','auth','first_name','last_name','thirdname','position','telephone','email','passport','birthday')
         #fields = ('__all__')
    
     def patch(self,instance, validate_data):
+       
         instance.save()
         return instance
 

@@ -61,6 +61,8 @@ class clientobj(models.Model):
 class object_contracts(models.Model):
     clientobj = models.ForeignKey(clientobj,null=True, on_delete=models.CASCADE,verbose_name='Объект',related_name='clientobj')
     object_contracts = models.FileField(upload_to='contracts/', verbose_name="Договор", null=True,blank=True)
+    contracts_name =  models.CharField(max_length=250, verbose_name="Наименование", null=True,blank=True)
+    contracts_description = models.CharField(max_length=1024, verbose_name="Описание", null=True, blank=True)
 
     def __str__(self):
         return str(self.clientobj)

@@ -19,7 +19,7 @@ class authSerializer(serializers.ModelSerializer):
             user.save()
             return user
 
-    def patch(self, instance, validated_data):
+    def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             if attr == 'password':
                 instance.set_password(value)

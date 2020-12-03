@@ -9,7 +9,7 @@ from . import models
 
 class TaskGetAllList(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self):
+    def get(self,format=None):
         queryset = models.Task.objects.all()
         serializer = serializers.TaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -45,3 +45,10 @@ class STaskDetailList(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.Stask.objects.all()
     serializer_class = serializers.StaskSerializer
+
+class GetSTaskList(APIView):
+   def get(idtask,self,format=None):
+      permission_classes = [IsAuthenticated]
+      queryset = models.Stask.objects.filter(Task=idtask)
+      serializer_class = serializers.StaskSerializer
+

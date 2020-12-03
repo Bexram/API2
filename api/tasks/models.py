@@ -26,7 +26,7 @@ class Task(models.Model):
 
 
 class Stask(models.Model):
-    Task = models.ForeignKey('Task', on_delete=models.PROTECT, null=True, verbose_name='Задача')
+    Task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, verbose_name='Задача')
     Stask_name = models.CharField(max_length=250, verbose_name="Подзадача")
     stask_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
     stask_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
@@ -39,3 +39,16 @@ class Stask(models.Model):
         verbose_name_plural = 'Подзадачи'
         verbose_name = 'Подзадача'
         ordering = ['-stask_compl']
+
+
+class Stask_foto(models.Model):
+    Stask = models.ForeignKey('Stask', on_delete=models.CASCADE, null=True, verbose_name='Задача')
+    foto=models.ImageField(verbose_name='Изображения',upload_to='report_images')
+
+    def __str__(self):
+        return str(self.Stask.Stask_name)
+
+    class Meta:
+        verbose_name_plural = 'Изображения подзадач'
+        verbose_name = 'Изображение'
+

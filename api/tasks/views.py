@@ -47,8 +47,9 @@ class STaskDetailList(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.StaskSerializer
 
 class GetSTaskList(APIView):
-   def get(idtask,self,format=None):
-      permission_classes = [IsAuthenticated]
-      queryset = models.Stask.objects.filter(Task=idtask)
-      serializer_class = serializers.StaskSerializer
+   permission_classes = [IsAuthenticated]
+   def get(request,self,pk,format=None):
+      queryset = models.Stask.objects.filter(Task=pk)
+      serializer = serializers.StaskSerializer(queryset,many=True)
+      return Response(serializer.data)
 

@@ -11,4 +11,6 @@ urlpatterns = [
     path('contactman/<int:pk>/', views.ContactManDetailList.as_view()),
     path('contract/', views.ContractList.as_view()),
     path('contract/<int:pk>/', views.ContractDetailList.as_view()),
+    path('getobjects/<int:pk>/', views.GetObjectList.as_view()),
+    path('getcontracts/<int:pk>/', views.GetContractList.as_view()),
 ]

@@ -30,6 +30,7 @@ class Stask(models.Model):
     Stask_name = models.CharField(max_length=250, verbose_name="Подзадача")
     stask_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
     stask_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
+    Stask_other = models.CharField(max_length=1024, verbose_name="Описание", )
     stask_status = models.BooleanField(verbose_name='Статус', null=0)
 
     def __str__(self):

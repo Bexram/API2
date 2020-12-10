@@ -1,10 +1,10 @@
 from django.db import models
 from clients.models import object_contracts,clientobj
-from users.models import auth
+from users.models import UserProfile
 
 # Create your models here.
 class Task(models.Model):
-    userprof = models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Сотрудник')
+    userprof = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='Сотрудник')
     contract = models.ForeignKey(object_contracts, null=True, on_delete=models.CASCADE, verbose_name='Договор')
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
     Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)

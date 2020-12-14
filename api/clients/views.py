@@ -65,7 +65,7 @@ class GetObjectList(APIView):
 
     def get(request, self, pk, format=None):
         queryset = models.clientobj.objects.filter(client=pk)
-        serializer = serializers.ObjectSerializer(queryset, many=True)
+        serializer = serializers.ObjectGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -74,5 +74,5 @@ class GetContractList(APIView):
 
     def get(request, self, pk, format=None):
         queryset = models.clientobj.object_contracts.filter(clientobj=pk)
-        serializer = serializers.ContractSerializer(queryset, many=True)
+        serializer = serializers.ContractGetSerializer(queryset, many=True)
         return Response(serializer.data)

@@ -29,12 +29,12 @@ class ObjectGetSerializer(serializers.ModelSerializer):
 
 
 class ContractSerializer(serializers.ModelSerializer):
-    clientobj=ObjectSerializer()
     class Meta:
         model = object_contracts
         fields = ('id','clientobj','contracts_name','contracts_description')
 
 class ContractGetSerializer(serializers.ModelSerializer):
+    clientobj = ObjectSerializer()
     class Meta:
         model = object_contracts
         fields = ('id','clientobj','contracts_name','contracts_description')

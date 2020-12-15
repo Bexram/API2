@@ -73,6 +73,6 @@ class GetContractList(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(request, self, pk, format=None):
-        queryset = models.clientobj.object_contracts.filter(clientobj=pk)
+        queryset = models.object_contracts.objects.filter(clientobj=pk)
         serializer = serializers.ContractGetSerializer(queryset, many=True)
         return Response(serializer.data)

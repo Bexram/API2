@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from .models import Task, Stask
-from clients.serializers import ContractSerializer
+from clients.serializers import ContractGetSerializer
 from users.serializers import GetUserSerializer
 
 
 class TaskGetSerializer(serializers.ModelSerializer):
-    contract = ContractSerializer()
+    contract = ContractGetSerializer()
     userprof = GetUserSerializer()
 
     class Meta:

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task, Stask
+from .models import Task, Stask,Stask_foto
 from clients.serializers import ContractGetSerializer
 from users.serializers import GetUserSerializer
 
@@ -23,4 +23,10 @@ class TaskSerializer(serializers.ModelSerializer):
 class StaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stask
+        fields = ('__all__')
+
+
+class StaskFotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stask_foto
         fields = ('__all__')

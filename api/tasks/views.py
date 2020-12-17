@@ -53,3 +53,21 @@ class GetSTaskList(APIView):
       serializer = serializers.StaskSerializer(queryset,many=True)
       return Response(serializer.data)
 
+
+class GetFoto(APIView):
+   permission_classes = [IsAuthenticated]
+   def get(request,self,pk,format=None):
+      queryset = models.Stask_foto.objects.filter(Stask=pk)
+      serializer = serializers.StaskFotoSerializer(queryset,many=True)
+      return Response(serializer.data)
+
+class SFotoTaskList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.Stask_foto.objects.all()
+    serializer_class = serializers.StaskFotoSerializer
+
+
+class STaskFotoDetailList(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.Stask_foto.objects.all()
+    serializer_class = serializers.StaskFotoSerializer

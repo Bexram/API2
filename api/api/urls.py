@@ -3,6 +3,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from api import settings
+from django.conf.urls.static import static
 from django.contrib.auth.views import PasswordChangeView
 """api URL Configuration
 
@@ -48,3 +50,4 @@ urlpatterns = [
     path('auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

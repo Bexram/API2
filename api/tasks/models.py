@@ -50,6 +50,6 @@ class Stask_foto(models.Model):
         return str(self.Stask.Stask_name)
 
     class Meta:
-        verbose_name_plural = 'Изображения подзадач'
+        verbose_name_plural = 'Фотоотчет подзадач'
         verbose_name = 'Изображение'
 

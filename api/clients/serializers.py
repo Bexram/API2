@@ -20,7 +20,6 @@ class ClientProfileSerializer(serializers.ModelSerializer):
         fields = ('id','auth','client_name','client_fullname','client_inn','client_ogrn','client_kpp','client_factaddr','client_juraddr','client_telephone','client_mail','client_site')
 
 class ObjectSerializer(serializers.ModelSerializer):
-    client=ClientGetContractsSerializer()
     class Meta:
         model = clientobj
         fields = ('id','client','object_name','object_adress','object_telephone','object_email','object_site')
@@ -39,7 +38,7 @@ class ContractSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 class ContractGetSerializer(serializers.ModelSerializer):
-    clientobj = ObjectSerializer()
+    clientobj = ObjectGetSerializer()
     class Meta:
         model = object_contracts
         fields = ('id','clientobj','object_contracts','contracts_name','contracts_description')

@@ -47,7 +47,7 @@ class Stask_foto(models.Model):
     foto=models.ImageField(verbose_name='Изображения',upload_to='report_images', null=True,blank=True)
 
     def __str__(self):
-        return str(self.Stask.Stask_name)
+        return str(self.Stask)
 
     class Meta:
         verbose_name_plural = 'Фотоотчет подзадач'

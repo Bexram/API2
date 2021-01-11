@@ -44,7 +44,7 @@ class Stask(models.Model):
 
 class Stask_foto(models.Model):
     Stask = models.ForeignKey('Stask', on_delete=models.CASCADE, null=True, verbose_name='Задача')
-    foto=models.ImageField(verbose_name='Изображения',upload_to='report_images')
+    foto=models.ImageField(verbose_name='Изображения',upload_to='report_images', null=True,blank=True)
 
     def __str__(self):
         return str(self.Stask.Stask_name)

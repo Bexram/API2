@@ -11,5 +11,5 @@ urlpatterns = [
     path('stasks/<int:pk>/', views.STaskDetailList.as_view()),
     path('getfoto/<int:pk>/', views.GetFoto.as_view()),
     path('foto/', views.SFotoTaskList.as_view()),
-    path('foto/<int:pk>/', views.STaskDetailList.as_view()),
+    path('foto/<int:pk>/', views.STaskFotoDetailList.as_view()),
 ]

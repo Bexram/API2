@@ -8,7 +8,7 @@ class VacationsSerializer(serializers.ModelSerializer):
         fields=('__all__')
 
 class VacationsGetSerializer(serializers.ModelSerializer):
-    userprof = GetUserSerializer()
+    #userprof = GetUserSerializer()
     class Meta:
         model = models.Vacations
         fields=('__all__')

@@ -10,7 +10,7 @@ class Vacations(models.Model):
     userprof = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='Сотрудник')
     start = models.DateField(db_index=True, verbose_name='Дата начала отпуска')
     end = models.DateField(db_index=True, verbose_name='Дата окончания отпуска')
-    unit=models.CharField(max_length=250, verbose_name="Отдел",choices=role, default=1, null=True, blank=True)
+    unit=models.CharField(max_length=250, verbose_name="Отдел",choices=units, default=1, null=True, blank=True)
 
 
     def __str__(self):

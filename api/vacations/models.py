@@ -3,9 +3,14 @@ from users.models import UserProfile
 # Create your models here.
 
 class Vacations(models.Model):
+    units = ((1, 'Административный отдел'),
+            (2, 'Технический отдел - инженера'),
+             (3, 'Технический отдел - Монтажники'),
+             (4, 'Отдел продаж'))
     userprof = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='Сотрудник')
-    start = models.DateField(db_index=True, verbose_name='Дата начала отпуска', null=True, blank=True)
+    start = models.DateField(db_index=True, verbose_name='Дата начала отпуска')
     end = models.DateField(db_index=True, verbose_name='Дата окончания отпуска')
+    unit=models.CharField(max_length=250, verbose_name="Отдел",choices=role, default=1, null=True, blank=True)
 
 
     def __str__(self):

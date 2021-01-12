@@ -46,6 +46,7 @@ urlpatterns = [
     path('', urls.include('clients.urls')),
     path('', urls.include('tasks.urls')),
     path('', urls.include('checklist.urls')),
+    path('', urls.include('vacations.urls')),
     path('menu/', urls.include('menu.urls')),
     path('auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -9,12 +9,25 @@ class VacationGetAllList(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,format=None):
         queryset = models.Vacations.objects.all()
-        serializer = serializers.TaskGetSerializer(queryset, many=True)
+        serializer = serializers.VacationsGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
 class VacationGetList(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         queryset = models.Task.objects.filter(userprof=request.user)
-        serializer = serializers.TaskGetSerializer(queryset, many=True)
+        serializer = serializers.VacationsGetSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class VacationList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.Vacations.objects.all()
+    serializer_class = serializers.VacationsSerializer
+
+
+
+class VacationDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.Vacations.objects.all()
+    serializer_class = serializers.VacationsSerializer

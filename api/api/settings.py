@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'menu',
+    'vacations',
     'rest_framework',
     'corsheaders',
     'drf_yasg',

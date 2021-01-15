@@ -1,13 +1,14 @@
 from django.db import models
-from clients.models import object_contracts,clientobj
+from clients.models import object_contracts, clientobj
 from users.models import auth
+
 
 # Create your models here.
 class Task(models.Model):
     userprof = models.ForeignKey(auth, on_delete=models.CASCADE, verbose_name='Сотрудник')
     contract = models.ForeignKey(object_contracts, null=True, on_delete=models.CASCADE, verbose_name='Договор')
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
-    Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)
+    Task_other = models.TextField(null=True, verbose_name='Примечание', blank=True)
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
     task_start = models.DateTimeField(db_index=True, verbose_name='Дата начала задачи', null=True, blank=True)
     task_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
@@ -44,7 +45,7 @@ class Stask(models.Model):
 
 class Stask_foto(models.Model):
     Stask = models.ForeignKey('Stask', on_delete=models.CASCADE, null=True, verbose_name='Задача')
-    foto=models.ImageField(verbose_name='Изображения',upload_to='report_images', null=True,blank=True)
+    foto = models.ImageField(verbose_name='Изображения', upload_to='report_images', null=True, blank=True)
 
     def __str__(self):
         return str(self.Stask)
@@ -53,3 +54,34 @@ class Stask_foto(models.Model):
         verbose_name_plural = 'Фотоотчет подзадач'
         verbose_name = 'Изображение'
 
+
+class Reglament_cat(models.Model):
+    Cat_name = models.CharField(max_length=250, verbose_name="Подзадача")
+
+    def __str__(self):
+        return self.Cat_name
+
+    class Meta:
+        verbose_name_plural = 'Категории регламентных работ'
+        verbose_name = 'Категория регламентных работ'
+
+
+class Reglament(models.Model):
+    period = ((1, 'Ежедневно'),
+              (2, 'Еженедельно'),
+              (3, 'Ежемесячно'),
+              (4, 'Ежеквартально'),
+              (5, 'Ежегодно'),
+              (6, 'Другое'),
+              )
+    cat = models.ForeignKey('Reglament_cat', on_delete=models.CASCADE, verbose_name='Категория')
+    Task_name = models.CharField(max_length=250, verbose_name="Вид работы")
+    Task_period = models.IntegerField(verbose_name='Переодичность', choices=period, default=3)
+
+    def __str__(self):
+        return self.Task_name
+
+    class Meta:
+        verbose_name_plural = 'Регламентные работы'
+        verbose_name = 'Регламентная работа'
+        ordering = ['-cat']

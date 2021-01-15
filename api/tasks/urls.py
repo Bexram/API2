@@ -12,4 +12,6 @@ urlpatterns = [
     path('getfoto/<int:pk>/', views.GetFoto.as_view()),
     path('foto/', views.SFotoTaskList.as_view()),
     path('foto/<int:pk>/', views.STaskFotoDetailList.as_view()),
+    path('reglament/<int:pk>/', views.GetReglamList.as_view()),
+    path('reglamentcat/', views.GetReglamCatList.as_view()),
 ]

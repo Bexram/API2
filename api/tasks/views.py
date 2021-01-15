@@ -71,3 +71,17 @@ class STaskFotoDetailList(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.Stask_foto.objects.all()
     serializer_class = serializers.StaskFotoSerializer
+
+class GetReglamList(APIView):
+   permission_classes = [IsAuthenticated]
+   def get(request,self,pk,format=None):
+      queryset = models.Reglament.objects.filter(cat=pk)
+      serializer = serializers.ReglamentSerializer(queryset,many=True)
+      return Response(serializer.data)
+
+class GetReglamCatList(APIView):
+   permission_classes = [IsAuthenticated]
+   def get(request,self,format=None):
+      queryset = models.Reglament_cat.objects.all()
+      serializer = serializers.ReglamCatSerializer(queryset,many=True)
+      return Response(serializer.data)

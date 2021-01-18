@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'clients',
     'tasks',
     'checklist',
-    'django_crontab'
+
 ]
 
 MIDDLEWARE = [

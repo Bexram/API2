@@ -3,23 +3,30 @@ from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from bs4 import BeautifulSoup
+import requests
+import datetime
 from . import serializers
 from . import models
 
+
 class TaskGetAllList(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self,format=None):
+
+    def get(self, format=None):
         queryset = models.Task.objects.all()
         serializer = serializers.TaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
 class TaskGetList(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, format=None):
         queryset = models.Task.objects.filter(userprof=request.user)
         serializer = serializers.TaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
+
 
 class TaskList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -27,12 +34,10 @@ class TaskList(generics.ListCreateAPIView):
     serializer_class = serializers.TaskSerializer
 
 
-
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
-
 
 
 class STaskList(generics.ListCreateAPIView):
@@ -46,20 +51,24 @@ class STaskDetailList(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Stask.objects.all()
     serializer_class = serializers.StaskSerializer
 
+
 class GetSTaskList(APIView):
-   permission_classes = [IsAuthenticated]
-   def get(request,self,pk,format=None):
-      queryset = models.Stask.objects.filter(Task=pk)
-      serializer = serializers.StaskSerializer(queryset,many=True)
-      return Response(serializer.data)
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, pk, format=None):
+        queryset = models.Stask.objects.filter(Task=pk)
+        serializer = serializers.StaskSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class GetFoto(APIView):
-   permission_classes = [IsAuthenticated]
-   def get(request,self,pk,format=None):
-      queryset = models.Stask_foto.objects.filter(Stask=pk)
-      serializer = serializers.StaskFotoSerializer(queryset,many=True)
-      return Response(serializer.data)
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, pk, format=None):
+        queryset = models.Stask_foto.objects.filter(Stask=pk)
+        serializer = serializers.StaskFotoSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class SFotoTaskList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -72,16 +81,44 @@ class STaskFotoDetailList(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Stask_foto.objects.all()
     serializer_class = serializers.StaskFotoSerializer
 
+
 class GetReglamList(APIView):
-   permission_classes = [IsAuthenticated]
-   def get(request,self,pk,format=None):
-      queryset = models.Reglament.objects.filter(cat=pk)
-      serializer = serializers.ReglamentSerializer(queryset,many=True)
-      return Response(serializer.data)
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, pk, format=None):
+        queryset = models.Reglament.objects.filter(cat=pk)
+        serializer = serializers.ReglamentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class GetReglamCatList(APIView):
-   permission_classes = [IsAuthenticated]
-   def get(request,self,format=None):
-      queryset = models.Reglament_cat.objects.all()
-      serializer = serializers.ReglamCatSerializer(queryset,many=True)
-      return Response(serializer.data)
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, format=None):
+        queryset = models.Reglament_cat.objects.all()
+        serializer = serializers.ReglamCatSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class GetHd(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, format=None):
+        nowyear = datetime.datetime.now().year
+        startyear = int(nowyear) - 5
+        holydays = []
+        holydaysp = []
+        while startyear < nowyear + 5:
+            url = 'https://calendar.yoip.ru/' + str(startyear) + '-calendar.html'
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'lxml')
+            year = soup.find_all('div', class_='col-6 col-sm-6 col-md-4 text-center')
+            monthnumb = 1
+            for month in year:
+                for tag in month.find_all('td', class_='_hd warning'):
+                    holydays.append(str(startyear)+'-' + str(monthnumb) + '-' + tag.text)
+                for tag in month.find_all('td', class_='_hd warning tt-hd'):
+                    holydaysp.append(str(startyear)+'-' + str(monthnumb) + '-' + tag.text)
+                monthnumb = monthnumb + 1
+            startyear = startyear + 1
+        return Response(str(holydays) + '|' + str(holydaysp))

@@ -1,11 +1,13 @@
 from django.core.management.base import BaseCommand, CommandError
 from bs4 import BeautifulSoup
 import requests
+import datetime
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
+            start=datetime.datetime.now()
             url = 'https://calendar.yoip.ru/2021-calendar.html'
             response = requests.get(url)
             soup = BeautifulSoup(response.text, 'lxml')
@@ -27,3 +29,6 @@ class Command(BaseCommand):
             f.write('hdp')
             f.write(str(holydaysp))
             f.close()
+
+            end = datetime.datetime.now()
+            print(str(end-start))

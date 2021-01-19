@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'clients',
     'tasks',
     'checklist',
-
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -72,9 +72,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 
 ]
-CRONJOBS = [
-    ('* * * * *', 'cmd','>> /tmp/scheduled_job.log')
-]
+
 ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'clients',
     'tasks',
     'checklist',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

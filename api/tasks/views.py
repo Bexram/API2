@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from bs4 import BeautifulSoup
 import requests
 import datetime
+import json
 from . import serializers
 from . import models
 
@@ -101,7 +102,7 @@ class GetReglamCatList(APIView):
 
 
 class GetHd(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(request, self, format=None):
         nowyear = datetime.datetime.now().year
@@ -121,4 +122,6 @@ class GetHd(APIView):
                     holydaysp.append(str(startyear)+'-' + str(monthnumb) + '-' + tag.text)
                 monthnumb = monthnumb + 1
             startyear = startyear + 1
-        return Response(str(holydays) + '|' + str(holydaysp))
+        weekends={'wd': holydays}
+        hd={'hd':holydaysp}
+        return Response(json.dumps(weekends)+json.dumps(hd))

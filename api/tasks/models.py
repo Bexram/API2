@@ -85,3 +85,14 @@ class Reglament(models.Model):
         verbose_name_plural = 'Регламентные работы'
         verbose_name = 'Регламентная работа'
         ordering = ['-cat']
+
+class trasfer_task(models.Model):
+    to_user = models.ForeignKey(auth, on_delete=models.RESTRICT, verbose_name='Кому перенос',related_name='to')
+    Task = models.ForeignKey(Task, on_delete=models.RESTRICT, verbose_name='Задача')
+
+    def __str__(self):
+        return self.Task.Task_name
+
+    class Meta:
+        verbose_name_plural = 'Уведомления о переносе'
+        verbose_name = 'Уведомление о переносе'

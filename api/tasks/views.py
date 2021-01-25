@@ -3,6 +3,7 @@ from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from bs4 import BeautifulSoup
 import requests
 import datetime
@@ -102,7 +103,7 @@ class GetReglamCatList(APIView):
 
 
 class GetHd(APIView):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(request, self, format=None):
         nowyear = datetime.datetime.now().year
@@ -125,3 +126,39 @@ class GetHd(APIView):
         weekends={'wd': holydays}
         hd={'hd':holydaysp}
         return Response(json.dumps(weekends)+json.dumps(hd))
+
+
+class TransferGetList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        queryset = models.trasfer_task.objects.filter(to_user=request.user)
+        serializer = serializers.GetTranferSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class TransferList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.trasfer_task.objects.all()
+    serializer_class = serializers.TranferSerializer
+
+
+class TransferDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.trasfer_task.objects.all()
+    serializer_class = serializers.TranferSerializer
+
+
+class CompleteTaskTransfer(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self, request, pk, format=None):
+        queryset = models.trasfer_task.objects.get(id=pk)
+        models.Task.objects.filter(id=queryset.Task.id).update(userprof=queryset.to_user)
+        models.trasfer_task.objects.filter(id=queryset.id).delete()
+        return Response(status=status.HTTP_200_OK)
+
+class DismissTaskTransfer(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self, request, pk, format=None):
+        models.trasfer_task.objects.filter(id=pk).delete()
+        return Response(status=status.HTTP_200_OK)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task, Stask,Stask_foto,Reglament,Reglament_cat
+from .models import Task, Stask,Stask_foto,Reglament,Reglament_cat,trasfer_task
 from clients.serializers import ContractGetSerializer
 from users.serializers import GetUserSerializer
 
@@ -39,4 +39,16 @@ class ReglamCatSerializer(serializers.ModelSerializer):
 class ReglamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reglament
+        fields = ('__all__')
+
+class GetTranferSerializer(serializers.ModelSerializer):
+    to_user=GetUserSerializer()
+    Task=TaskGetSerializer()
+    class Meta:
+        model = trasfer_task
+        fields = ('__all__')
+
+class TranferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = trasfer_task
         fields = ('__all__')

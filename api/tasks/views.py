@@ -14,7 +14,7 @@ from . import models
 
 
 class TaskGetAllList(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, format=None):
         queryset = models.Task.objects.all()
@@ -178,8 +178,20 @@ class AddReglam(APIView):
             reglam_cat=models.Reglament_cat.objects.get(id=serializer_class.data['reglamcat'])
             if (work.Task_period==3):
                 next_startdate=datetime.datetime.strptime(startdate,"%Y-%m-%dT%H:%M")
-                for month in range(2):
+                for month in range(12):
                     next_startdate = next_startdate + datetime.timedelta(days=28)
+                    task=models.Task(Task_name=reglam_cat,userprof=auth.objects.get(id=serializer_class.data['userprof']),Task_other=work.Task_name,task_compl= next_startdate)
+                    task.save()
+            if (work.Task_period==4):
+                next_startdate=datetime.datetime.strptime(startdate,"%Y-%m-%dT%H:%M")
+                for month in range(4):
+                    next_startdate = next_startdate + datetime.timedelta(days=84)
+                    task=models.Task(Task_name=reglam_cat,userprof=auth.objects.get(id=serializer_class.data['userprof']),Task_other=work.Task_name,task_compl= next_startdate)
+                    task.save()
+            if (work.Task_period==5):
+                next_startdate=datetime.datetime.strptime(startdate,"%Y-%m-%dT%H:%M")
+                for month in range(1):
+                    next_startdate = next_startdate + datetime.timedelta(days=360)
                     task=models.Task(Task_name=reglam_cat,userprof=auth.objects.get(id=serializer_class.data['userprof']),Task_other=work.Task_name,task_compl= next_startdate)
                     task.save()
         return Response(serializer_class.data['reglamcat'])

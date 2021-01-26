@@ -52,3 +52,9 @@ class TranferSerializer(serializers.ModelSerializer):
     class Meta:
         model = trasfer_task
         fields = ('__all__')
+
+class AddReglam(serializers.Serializer):
+    reglamcat=serializers.IntegerField()
+    userprof=serializers.IntegerField()
+    contract=serializers.IntegerField()
+    startdate=serializers.DateField()

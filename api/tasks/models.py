@@ -12,7 +12,7 @@ class Task(models.Model):
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
     task_start = models.DateTimeField(db_index=True, verbose_name='Дата начала задачи', null=True, blank=True)
     task_compl = models.DateTimeField(db_index=True, verbose_name='Дата выполнения')
-    task_status = models.BooleanField(verbose_name='Статус', null=0)
+    task_status = models.BooleanField(verbose_name='Статус', default=0)
 
     def __str__(self):
         return self.Task_name

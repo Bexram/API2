@@ -1,4 +1,5 @@
-from django.http import Http404
+
+from users.models import auth
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -162,3 +163,23 @@ class DismissTaskTransfer(APIView):
     def put(self, request, pk, format=None):
         models.trasfer_task.objects.filter(id=pk).delete()
         return Response(status=status.HTTP_200_OK)
+
+class AddReglam(APIView):
+    #permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer_class=serializers.AddReglam(request.data,many=False)
+        if serializer_class.data['startdate'] is None:
+            startdate=datetime.datetime.now()
+        else:
+            startdate=serializer_class.data['startdate']
+            print(startdate)
+        reglament=models.Reglament.objects.filter(cat=serializer_class.data['reglamcat'])
+        for work in reglament:
+            reglam_cat=models.Reglament_cat.objects.get(id=serializer_class.data['reglamcat'])
+            if (work.Task_period==3):
+                next_startdate=datetime.datetime.strptime(startdate,"%Y-%m-%dT%H:%M")
+                for month in range(2):
+                    next_startdate = next_startdate + datetime.timedelta(days=28)
+                    task=models.Task(Task_name=reglam_cat,userprof=auth.objects.get(id=serializer_class.data['userprof']),Task_other=work.Task_name,task_compl= next_startdate)
+                    task.save()
+        return Response(serializer_class.data['reglamcat'])

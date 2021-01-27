@@ -1,4 +1,5 @@
-from django.http import Http404
+import calendar
+from users.models import auth
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -13,7 +14,7 @@ from . import models
 
 
 class TaskGetAllList(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, format=None):
         queryset = models.Task.objects.all()
@@ -118,14 +119,14 @@ class GetHd(APIView):
             monthnumb = 1
             for month in year:
                 for tag in month.find_all('td', class_='_hd warning'):
-                    holydays.append(str(startyear)+'-' + str(monthnumb) + '-' + tag.text)
+                    holydays.append(str(startyear) + '-' + str(monthnumb) + '-' + tag.text)
                 for tag in month.find_all('td', class_='_hd warning tt-hd'):
-                    holydaysp.append(str(startyear)+'-' + str(monthnumb) + '-' + tag.text)
+                    holydaysp.append(str(startyear) + '-' + str(monthnumb) + '-' + tag.text)
                 monthnumb = monthnumb + 1
             startyear = startyear + 1
-        weekends={'wd': holydays}
-        hd={'hd':holydaysp}
-        return Response(json.dumps(weekends)+json.dumps(hd))
+        weekends = {'wd': holydays}
+        hd = {'hd': holydaysp}
+        return Response(json.dumps(weekends) + json.dumps(hd))
 
 
 class TransferGetList(APIView):
@@ -151,14 +152,77 @@ class TransferDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CompleteTaskTransfer(APIView):
     permission_classes = [IsAuthenticated]
+
     def put(self, request, pk, format=None):
         queryset = models.trasfer_task.objects.get(id=pk)
         models.Task.objects.filter(id=queryset.Task.id).update(userprof=queryset.to_user)
         models.trasfer_task.objects.filter(id=queryset.id).delete()
         return Response(status=status.HTTP_200_OK)
 
+
 class DismissTaskTransfer(APIView):
     permission_classes = [IsAuthenticated]
+
     def put(self, request, pk, format=None):
         models.trasfer_task.objects.filter(id=pk).delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+class AddReglam(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer_class = serializers.AddReglam(request.data, many=False)
+        reglament = models.Reglament.objects.filter(cat=serializer_class.data['reglamcat'])
+        days_in_month = lambda dt: calendar.monthrange(dt.year, dt.month)[1]
+        today = datetime.date.today()
+
+        for work in reglament:
+            reglam_cat = models.Reglament_cat.objects.get(id=serializer_class.data['reglamcat'])
+            next_startdate = today.replace(day=1) + datetime.timedelta(days_in_month(today))
+            today = datetime.datetime.now()
+            if (work.Task_period == 3):
+                for month in range(12):
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+                    next_startdate = next_startdate.replace(day=1) + datetime.timedelta(days_in_month(next_startdate))
+            if (work.Task_period == 4):
+                if (today.month <= 2):
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-02-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-08-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+                else:
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-08-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                for year in range(4):
+                    next_startdate = datetime.datetime.strptime(str(today.year + year) + '-02-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+                    next_startdate = datetime.datetime.strptime(str(today.year + year) + '-08-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+
+            if (work.Task_period == 5):
+                next_startdate = datetime.datetime.strptime(str(today.year) + '-12-01', '%Y-%m-%d')
+                for year in range(5):
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate)
+                    task.save()
+                    next_startdate = datetime.datetime.strptime(str(today.year + year) + '-12-01', '%Y-%m-%d')
         return Response(status=status.HTTP_200_OK)

@@ -14,6 +14,7 @@ urlpatterns = [
     path('foto/<int:pk>/', views.STaskFotoDetailList.as_view()),
     path('reglament/<int:pk>/', views.GetReglamList.as_view()),
     path('reglamentcat/', views.GetReglamCatList.as_view()),
+    path('addreglam/', views.AddReglam.as_view()),
     path('gethd/',views.GetHd.as_view()),
     path('completetransfer/<int:pk>/',views.CompleteTaskTransfer.as_view()),
     path('dismisstransfer/<int:pk>/',views.DismissTaskTransfer.as_view()),

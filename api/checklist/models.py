@@ -13,7 +13,7 @@ class Company(models.Model):
         verbose_name = 'Организация'
 
 class Task(models.Model):
-    company = models.ForeignKey('Company', on_delete=models.CASCADE,verbose_name='Организация')
+    company = models.ForeignKey('Company', on_delete=models.CASCADE,verbose_name='Организация', null=True)
     Task_name = models.CharField(max_length=250, verbose_name="Задача")
     Task_other = models.TextField(null=True, verbose_name='Примечание',blank=True)
     task_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')

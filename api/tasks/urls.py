@@ -5,6 +5,7 @@ urlpatterns = [
     path('tasks/', views.TaskList.as_view()),
     path('getalltasks/', views.TaskGetAllList.as_view()),
     path('gettasks/', views.TaskGetList.as_view()),
+    path('getmisstasks/', views.MissTaskGetList.as_view()),
     path('tasks/<int:pk>/', views.TaskDetail.as_view()),
     path('getstasks/<int:pk>/', views.GetSTaskList.as_view()),
     path('stasks/', views.STaskList.as_view()),

@@ -31,6 +31,15 @@ class TaskGetList(APIView):
         serializer = serializers.TaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
+class MissTaskGetList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        queryset = models.Task.objects.filter(userprof=request.user).filter(task_compl__lte=datetime.datetime.now()).filter(task_status=0)
+        print(queryset)
+        serializer = serializers.TaskGetSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class TaskList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]

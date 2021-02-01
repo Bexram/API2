@@ -67,8 +67,8 @@ class Reglament_cat(models.Model):
 
 
 class Reglament(models.Model):
-    period = ((1, 'Ежедневно'),
-              (2, 'Еженедельно'),
+    period = ((1, 'Сезонные'),
+              (2, 'Ежеквартально'),
               (3, 'Ежемесячно'),
               (4, 'Раз в полгода'),
               (5, 'Ежегодно'),

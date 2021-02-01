@@ -191,6 +191,82 @@ class AddReglam(APIView):
             reglam_cat = models.Reglament_cat.objects.get(id=serializer_class.data['reglamcat'])
             next_startdate = today.replace(day=1) + datetime.timedelta(days_in_month(today))
             today = datetime.datetime.now()
+            if (work.Task_period == 1):
+                if (today.month <= 3):
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-03-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-09-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+                else:
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-09-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+                for year in range(4):
+                    next_startdate = datetime.datetime.strptime(str(today.year + year+1) + '-03-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+                    next_startdate = datetime.datetime.strptime(str(today.year + year+1) + '-09-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+
+            if (work.Task_period == 2):
+                if (today.month == 1):
+                    month=1
+                    for quartal in range(4):
+                        next_startdate = datetime.datetime.strptime(str(today.year) + '-'+str(month)+'-01', '%Y-%m-%d')
+                        task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                        task.save()
+                        month = month + 3
+                if (today.month <= 4 and today.month>1):
+                    month=4
+                    for quartal in range(3):
+                        next_startdate = datetime.datetime.strptime(str(today.year) + '-'+str(month)+'-01', '%Y-%m-%d')
+                        task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                        task.save()
+                        month = month + 3
+                if (today.month <= 7 and today.month>4):
+                    month=7
+                    for quartal in range(2):
+                        next_startdate = datetime.datetime.strptime(str(today.year) + '-'+str(month)+'-01', '%Y-%m-%d')
+                        task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                        task.save()
+                        month = month + 3
+                if (today.month <= 10 and today.month>7):
+                    month=10
+                    next_startdate = datetime.datetime.strptime(str(today.year) + '-'+str(month)+'-01', '%Y-%m-%d')
+                    task = models.Task(Task_name=reglam_cat,
+                                       userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                       Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                    task.save()
+                for year in range(4):
+                    month = 1
+                    for quartal in range(4):
+                        next_startdate = datetime.datetime.strptime(str(today.year+year+1) + '-' + str(month) + '-01',
+                                                                    '%Y-%m-%d')
+                        task = models.Task(Task_name=reglam_cat,
+                                           userprof=auth.objects.get(id=serializer_class.data['userprof']),
+                                           Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
+                        task.save()
+                        month = month + 3
+
             if (work.Task_period == 3):
                 for month in range(12):
                     task = models.Task(Task_name=reglam_cat,
@@ -198,6 +274,7 @@ class AddReglam(APIView):
                                        Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
                     task.save()
                     next_startdate = next_startdate.replace(day=1) + datetime.timedelta(days_in_month(next_startdate))
+
             if (work.Task_period == 4):
                 if (today.month <= 2):
                     next_startdate = datetime.datetime.strptime(str(today.year) + '-02-01', '%Y-%m-%d')
@@ -217,12 +294,12 @@ class AddReglam(APIView):
                                        Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
                     task.save()
                 for year in range(4):
-                    next_startdate = datetime.datetime.strptime(str(today.year + year) + '-02-01', '%Y-%m-%d')
+                    next_startdate = datetime.datetime.strptime(str(today.year + year+1) + '-02-01', '%Y-%m-%d')
                     task = models.Task(Task_name=reglam_cat,
                                        userprof=auth.objects.get(id=serializer_class.data['userprof']),
                                        Task_other=work.Task_name, task_compl=next_startdate, contract=contract)
                     task.save()
-                    next_startdate = datetime.datetime.strptime(str(today.year + year) + '-08-01', '%Y-%m-%d')
+                    next_startdate = datetime.datetime.strptime(str(today.year + year+1) + '-08-01', '%Y-%m-%d')
                     task = models.Task(Task_name=reglam_cat,
                                        userprof=auth.objects.get(id=serializer_class.data['userprof']),
                                        Task_other=work.Task_name, task_compl=next_startdate, contract=contract)

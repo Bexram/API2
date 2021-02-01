@@ -32,7 +32,7 @@ class authSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        fields = ('id','auth','first_name','last_name','thirdname','position','telephone','email','passport','birthday')
+        fields = ('id','auth','first_name','last_name','thirdname','position','telephone','email','passport','birthday','foto')
         #fields = ('__all__')
    
     def patch(self,instance, validate_data):

@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     thirdname = models.CharField(verbose_name='Отчество', max_length=256, null=True, blank=True)
     position = models.CharField(verbose_name='Должность', max_length=256, null=True, blank=True)
     telephone = models.CharField(verbose_name='Телефон', max_length=256, null=True, blank=True)
-    email = models.EmailField(verbose_name='Почта', max_length=256, null=True, blank=True)
+    email = models.CharField(verbose_name='Почта', max_length=256, null=True, blank=True)
     birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)
     passport = models.CharField(verbose_name='Паспортные данные', null=True, max_length=1024, blank=True)
     foto = models.ImageField(verbose_name='Изображения', upload_to='user_images', null=True, blank=True)

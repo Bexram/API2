@@ -32,5 +32,5 @@ class UserDetailList(generics.RetrieveUpdateDestroyAPIView):
 
 class GetUserList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = auth.objects.filter(status=1)
+    queryset = auth.objects.filter(status=1).order_by('-is_active','userprofile__last_name')
     serializer_class = GetUserSerializer

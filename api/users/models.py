@@ -6,6 +6,11 @@ class auth(AbstractUser):
     role = ((1, 'Сотрудник'),
             (2, 'Клиент'))
     status = models.IntegerField(verbose_name='Роль', choices=role, default=1, null=True,blank=True)
+   
+    class Meta:
+        verbose_name = 'Учетная запись'
+        verbose_name_plural = 'Учетные записи'
+        ordering = ('-is_active',)
 
 
 # Create your models here.
@@ -20,7 +25,11 @@ class UserProfile(models.Model):
     birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)
     passport = models.CharField(verbose_name='Паспортные данные', null=True, max_length=1024, blank=True)
     foto = models.ImageField(verbose_name='Изображения', upload_to='user_images', null=True, blank=True)
-
+   
+    class Meta:
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
+        ordering = ('-last_name',)
 
     def __str__(self):
         if self.first_name is not None:

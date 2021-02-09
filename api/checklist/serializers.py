@@ -6,13 +6,13 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ('__all__')
 
-class TaskGetSerializer(serializers.ModelSerializer):
+class ChTaskGetSerializer(serializers.ModelSerializer):
     company=CompanySerializer()
     class Meta:
         model = Task
         fields = ('__all__')
 
-class TaskSerializer(serializers.ModelSerializer):
+class ChTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('__all__')

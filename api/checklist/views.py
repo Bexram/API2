@@ -18,17 +18,17 @@ class TaskGetList(APIView):
 
     def get(request, self, pk, format=None):
         queryset = models.Task.objects.filter(company=pk)
-        serializer = serializers.TaskGetSerializer(queryset, many=True)
+        serializer = serializers.ChTaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
 class TaskList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.Task.objects.all()
-    serializer_class = serializers.TaskSerializer
+    serializer_class = serializers.ChTaskSerializer
 
 
 class TaskDetailList(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.Task.objects.all()
-    serializer_class = serializers.TaskSerializer
+    serializer_class = serializers.ChTaskSerializer

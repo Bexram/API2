@@ -14,8 +14,7 @@ class dacobj(models.Model):
 
 class dacmatrix(models.Model):
     level = ((1, 'Чтение'),
-             (2, 'Редактирование'),
-             (3, 'Редактирование и делегирование'))
+             (2, 'Редактирование'))
     subjects = models.ForeignKey(auth, null=True, on_delete=models.CASCADE,
                                  verbose_name='Сотрудник')
     dacobjects = models.ForeignKey('dacobj', related_name='dacobj', on_delete=models.PROTECT, null=True,

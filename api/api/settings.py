@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'tasks',
     'checklist',
     'allowance',
+    'reports',
 
 ]
 

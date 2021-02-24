@@ -47,3 +47,9 @@ class ContactManSerializer(serializers.ModelSerializer):
     class Meta:
         model = contact_man
         fields = ('__all__')
+
+class ContactManGetSerializer(serializers.ModelSerializer):
+    client=ClientProfileSerializer()
+    class Meta:
+        model = contact_man
+        fields = ('__all__')

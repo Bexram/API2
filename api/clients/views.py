@@ -48,6 +48,14 @@ class ContactManDetailList(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.contact_man.objects.all()
     serializer_class = serializers.ContactManSerializer
 
+class GetContactManList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(request, self, pk, format=None):
+        queryset = models.contact_man.objects.filter(client=pk)
+        serializer = serializers.ContactManGetSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class ContractList(APIView):
     permission_classes = [IsAuthenticated]

@@ -9,7 +9,7 @@ urlpatterns = [
     path('clients/<int:pk>/', views.ClientDetailList.as_view()),
     path('objects/', views.ObjectList.as_view()),
     path('objects/<int:pk>/', views.ObjectDetailList.as_view()),
-    path('getcontactman/<int:pk>/', views.ContactManList.as_view()),
+    path('getcontactman/<int:pk>/', views.GetContactManList.as_view()),
     path('contactman/', views.ContactManList.as_view()),
     path('contactman/<int:pk>/', views.ContactManDetailList.as_view()),
     path('contract/', views.ContractList.as_view()),

@@ -1,10 +1,18 @@
 from rest_framework import serializers
+from . import models
+from clients.serializers import ObjectGetSerializer,ContactManSerializer
+from users.serializers import UserProfileSerializer
 
 class ReportSerializer(serializers.Serializer):
-    employer=serializers.IntegerField
-    client=serializers.IntegerField
-    object=serializers.IntegerField
-    contact=serializers.IntegerField
-    start=serializers.DateField
-    end=serializers.DateField
+    class Meta:
+        model = models.QReport
+        fields = ('__all__')
 
+
+class GetReportSerializer(serializers.Serializer):
+    userprof=UserProfileSerializer()
+    clientobj=ObjectGetSerializer()
+    contact_man=ContactManSerializer()
+    class Meta:
+        model = models.QReport
+        fields = ('__all__')

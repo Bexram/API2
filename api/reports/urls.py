@@ -3,5 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('rep/', views.Report.as_view()),
+    path('rep/', views.RepList.as_view()),
+    path('rep/<int:pk>', views.RepDetailList.as_view()),
+    path('getrep/', views.GetRepList.as_view()),
 ]

@@ -12,6 +12,7 @@ class QReport(models.Model):
     dateproj = models.CharField(max_length=250, verbose_name="Дата проекта", default='Неустановлено')
     results = models.CharField(max_length=1024, verbose_name="Результат проверки", null=True)
     rep_published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата публикации')
+    auto_generate=models.BooleanField(verbose_name='Автоформирование', default=1)
 
     def __str__(self):
         return str(self.clientobj.object_name)

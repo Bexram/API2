@@ -3,13 +3,13 @@ from . import models
 from clients.serializers import ObjectGetSerializer,ContactManSerializer
 from users.serializers import UserProfileSerializer
 
-class ReportSerializer(serializers.Serializer):
+class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.QReport
         fields = ('__all__')
 
 
-class GetReportSerializer(serializers.Serializer):
+class GetReportSerializer(serializers.ModelSerializer):
     userprof=UserProfileSerializer()
     clientobj=ObjectGetSerializer()
     contact_man=ContactManSerializer()

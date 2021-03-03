@@ -16,10 +16,10 @@ class auth(AbstractUser):
 # Create your models here.
 class UserProfile(models.Model):
     auth = models.OneToOneField(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
-    first_name = models.CharField(max_length=150, blank=True, null=True,verbose_name='Имя')
-    last_name = models.CharField(max_length=150, blank=True, null=True,verbose_name='Фамилия')
-    thirdname = models.CharField(verbose_name='Отчество', max_length=256, null=True, blank=True)
-    position = models.CharField(verbose_name='Должность', max_length=256, null=True, blank=True)
+    first_name = models.CharField(max_length=150,  null=True,verbose_name='Имя')
+    last_name = models.CharField(max_length=150,  null=True,verbose_name='Фамилия')
+    thirdname = models.CharField(verbose_name='Отчество', max_length=256, null=True)
+    position = models.CharField(verbose_name='Должность', max_length=256, null=True)
     telephone = models.CharField(verbose_name='Телефон', max_length=256, null=True, blank=True)
     email = models.CharField(verbose_name='Почта', max_length=256, null=True, blank=True)
     birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)

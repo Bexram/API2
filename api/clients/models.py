@@ -30,7 +30,7 @@ class docs(models.Model):
 class contact_man(models.Model):
     client = models.ForeignKey('clients', null=True, on_delete=models.CASCADE, verbose_name='Клиент')
     FIO = models.CharField(max_length=250, verbose_name="ФИО", null=True)
-    position = models.CharField(max_length=250, verbose_name="Должность", null=True, blank=True)
+    position = models.CharField(max_length=250, verbose_name="Должность", null=True)
     email = models.CharField(max_length=250, verbose_name="Почта", null=True, blank=True)
     telephone = models.CharField(max_length=250, verbose_name="Телефон", null=True, blank=True)
     def __str__(self):

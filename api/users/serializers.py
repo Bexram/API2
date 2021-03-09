@@ -43,6 +43,15 @@ class AutoSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        # #fields = (
+        #     'id', 'auth', 'first_name', 'last_name', 'thirdname', 'position', 'telephone', 'email', 'passport',
+        #     'birthday',
+        #     'foto','unit')
+        fields = ('__all__')
+
+class GetUserProfileSerializer(serializers.ModelSerializer):
     unit = UnitSerializer()
     class Meta:
         model = models.UserProfile
@@ -52,9 +61,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         #     'foto','unit')
         fields = ('__all__')
 
-
 class GetUserSerializer(serializers.ModelSerializer):
-    userprofile = UserProfileSerializer()
+    userprofile = GetUserProfileSerializer()
 
     class Meta:
         model = models.auth

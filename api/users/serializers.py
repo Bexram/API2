@@ -6,7 +6,7 @@ from . import models
 class authSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.auth
-        fields = ('id', 'username', 'password', 'status', 'is_active', 'is_staff')
+        fields = ('id', 'username', 'password', 'status', 'is_active', 'is_staff','email')
 
     def create(self, validated_data):
         user = models.auth(
@@ -14,7 +14,7 @@ class authSerializer(serializers.ModelSerializer):
             status=validated_data['status'],
             is_active=validated_data['is_active'],
             is_staff=validated_data['is_staff'],
-
+            email=validated_data['email'],
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -66,7 +66,7 @@ class GetUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.auth
-        fields = ('id', 'username', 'status', 'is_active', 'userprofile')
+        fields = ('id', 'username', 'status', 'is_active', 'userprofile','email')
 
 
 class GetAutoSerializer(serializers.ModelSerializer):

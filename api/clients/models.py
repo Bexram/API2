@@ -11,7 +11,7 @@ class clients(models.Model):
     client_factaddr = models.CharField(max_length=250, verbose_name="Фактический адрес", null=True, blank=True)
     client_juraddr = models.CharField(max_length=250, verbose_name="Юридический адрес", null=True, blank=True)
     client_telephone = models.CharField(max_length=250, verbose_name="Телефон", null=True, blank=True)
-    client_mail = models.CharField(max_length=250, verbose_name="Почта", null=True, blank=True)
+    #client_mail = models.CharField(max_length=250, verbose_name="Почта", null=True, blank=True)
     client_site = models.CharField(max_length=250, verbose_name="Сайт", null=True, blank=True)
     def __str__(self):
         return self.client_name

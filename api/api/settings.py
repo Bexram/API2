@@ -23,14 +23,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, "files", "static")
 
 STATIC_URL = "/static/"
 
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = "bexram33@mail.ru"
-EMAIL_HOST_PASSWORD = "Stalker_159753"
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "cubp@szsb.ru"
+EMAIL_HOST_PASSWORD = "SpU81_0aS3%"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
+SERVER_EMAIL = EMAIL_HOST_USER
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",

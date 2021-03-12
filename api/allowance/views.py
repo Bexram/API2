@@ -1,5 +1,5 @@
-from django.shortcuts import render
 
+from rest_framework.response import Response
 # Create your views here.
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -16,6 +16,13 @@ class GetAllowanceList(generics.ListCreateAPIView):
     #permission_classes = [IsAuthenticated]
     queryset = models.allowance.objects.all()
     serializer_class = serializers.GetAllowanceSerializer
+
+class UserprofGetAllowanceList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    def get(request, self, pk, format=None):
+        queryset = models.allowance.objects.filter(userprof=pk)
+        serializer_class = serializers.GetAllowanceSerializer(queryset,many=True)
+        return Response(serializer_class.data)
 
 class AllowanceDetailList(generics.RetrieveUpdateDestroyAPIView):
     #permission_classes = [IsAuthenticated]

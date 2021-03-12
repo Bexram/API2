@@ -1,8 +1,9 @@
 from django.db import models
-from users.models import auth
+from users.models import auth,UserProfile
 
 class clients(models.Model):
     auth=models.OneToOneField(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
+    userprof=models.ForeignKey(UserProfile,on_delete=models.RESTRICT, null=True,  verbose_name='Закрепленный сотрудник')
     client_name = models.CharField(max_length=250, verbose_name="Краткое наименование")
     client_fullname = models.CharField(max_length=250, verbose_name="Полное наименование", null=True, blank=True)
     client_inn = models.CharField(max_length=250, verbose_name="ИНН", null=True, blank=True)
@@ -21,10 +22,6 @@ class clients(models.Model):
         verbose_name = 'Клиенты'
         ordering = ['client_name']
 
-
-class docs(models.Model):
-    client=models.ForeignKey(clients,null=True,on_delete=models.CASCADE,verbose_name='Клиент')
-    docs=models.FileField(upload_to='docs/',null=True)
 
 
 class contact_man(models.Model):

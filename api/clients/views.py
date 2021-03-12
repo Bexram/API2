@@ -12,6 +12,14 @@ class ClientGetList(generics.ListCreateAPIView):
     queryset = models.clients.objects.all()
     serializer_class = serializers.ClientGetProfileSerializer
 
+class UserprofClientGetList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    def get(request, self, pk, format=None):
+        queryset = models.clients.objects.filter(userprof=pk)
+        serializer_class = serializers.ClientGetProfileSerializer(queryset,many=True)
+        return Response(serializer_class.data)
+
+
 
 class ClientList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]

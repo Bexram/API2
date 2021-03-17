@@ -6,67 +6,92 @@ from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from . import models,serializers
-import users,clients,tasks
+from . import models, serializers
+import users, clients, tasks
 import datetime
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
+import sys
+import os
+from comtypes import client
 
 
 def getQuarterStart(dt=datetime.date.today()):
     return datetime.date(dt.year, (dt.month - 1) // 3 * 3 + 1, 1)
 
+
 def getQuarterEnd(dt=datetime.date.today()):
-    nextQtYr = dt.year + (1 if dt.month>9 else 0)
+    nextQtYr = dt.year + (1 if dt.month > 9 else 0)
     nextQtFirstMo = (dt.month - 1) // 3 * 3 + 4
-    nextQtFirstMo = 1 if nextQtFirstMo==13 else nextQtFirstMo
+    nextQtFirstMo = 1 if nextQtFirstMo == 13 else nextQtFirstMo
     nextQtFirstDy = datetime.date(nextQtYr, nextQtFirstMo, 1)
     return nextQtFirstDy - datetime.timedelta(days=1)
 
+
 class RepList(generics.ListCreateAPIView):
-    #permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = models.QReport.objects.all()
     serializer_class = serializers.ReportSerializer
 
 
 class RepDetailList(generics.RetrieveUpdateDestroyAPIView):
-   # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = models.QReport.objects.all()
     serializer_class = serializers.ReportSerializer
 
+
 class GetRepList(APIView):
-   # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     def get(request, self, format=None):
         queryset = models.QReport.objects.all()
         serializer = serializers.GetReportSerializer(queryset, many=True)
         return Response(serializer.data)
 
-class GenerateReport(APIView):
-    def get(self,request,pk,format=None):
-        data = models.QReport.objects.get(id=pk)
-        doc = DocxTemplate(os.path.abspath('reports/template.docx'))
-        context = {'works': data.works,
-                   'object': data.clientobj.object_name,
-                   'adress': data.clientobj.object_adress,
-                   'start': getQuarterStart(data.rep_published).strftime("%d.%m.%Y"),
-                   'end': getQuarterEnd(data.rep_published).strftime("%d.%m.%Y"),
-                   'pos': data.userprof.position,
-                   'fio': data.userprof.last_name + ' ' + data.userprof.first_name[:1] + '. ' + data.userprof.thirdname[:1] + '. ',
-                   'company_pos': data.contact_man.position,
-                   'company_fio': data.contact_man.FIO,
-                   'results': data.results
-                   }
-        doc.render(context)
-        doc.save("generated_doc.docx")
-        short_report = open("generated_doc.docx", 'rb')
+def ConstructDoc(data,name):
+    doc = DocxTemplate(os.path.abspath('reports/template.docx'))
+    context = {'works': data.works,
+               'object': data.clientobj.object_name,
+               'adress': data.clientobj.object_adress,
+               'start': getQuarterStart(data.rep_published).strftime("%d.%m.%Y"),
+               'end': getQuarterEnd(data.rep_published).strftime("%d.%m.%Y"),
+               'pos': data.userprof.position,
+               'fio': data.userprof.last_name + ' ' + data.userprof.first_name[
+                                                      :1] + '. ' + data.userprof.thirdname[:1] + '. ',
+               'company_pos': data.contact_man.position,
+               'company_fio': data.contact_man.FIO,
+               'results': data.results
+               }
+    doc.render(context)
+    doc.save(name)
 
-        master = Document_compose("generated_doc.docx")
-        composer = Composer(master)
-        # filename_second_docx is the name of the second docx file
-        doc2 = Document_compose("template.docx")
-        # append the doc2 into the master using composer.append function
-        composer.append(doc2)
-        # Save the combined docx with a name
-        composer.save("combined.docx")
-        response = HttpResponse(FileWrapper(short_report), content_type='application/docx')
+class GenerateReport(APIView):
+    def get(self, request, format=None):
+        data = models.QReport.objects.filter(auto_generate=True)
+
+        for report in enumerate(data):
+            if report[0] == 0:
+                ConstructDoc(report[1],'generated_doc.docx')
+            else:
+                ConstructDoc(report[1],'generated_doc1.docx')
+                master = Document_compose("generated_doc.docx")
+                composer = Composer(master)
+                # filename_second_docx is the name of the second docx file
+                doc2 = Document_compose("generated_doc1.docx")
+
+                # append the doc2 into the master using composer.append function
+                composer.append(doc2)
+                # Save the combined docx with a name
+
+        wdFormatPDF = 17
+
+        in_file = os.path.abspath('generated_doc.docx')
+        out_file = os.path.abspath('generated_doc.pdf')
+
+        word = client.CreateObject('Word.Application')
+        doc = word.Documents.Open(in_file)
+        doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+        doc.Close()
+        word.Quit()
+        short_report = open("generated_doc.pdf", 'rb')
+        response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
         return response

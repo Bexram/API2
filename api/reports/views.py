@@ -11,9 +11,6 @@ import users, clients, tasks
 import datetime
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
-import sys
-import os
-from comtypes import client
 
 
 def getQuarterStart(dt=datetime.date.today()):
@@ -82,16 +79,6 @@ class GenerateReport(APIView):
                 composer.append(doc2)
                 # Save the combined docx with a name
 
-        wdFormatPDF = 17
-
-        in_file = os.path.abspath('generated_doc.docx')
-        out_file = os.path.abspath('generated_doc.pdf')
-
-        word = client.CreateObject('Word.Application')
-        doc = word.Documents.Open(in_file)
-        doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-        doc.Close()
-        word.Quit()
         short_report = open("generated_doc.pdf", 'rb')
         response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
         return response

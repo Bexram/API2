@@ -11,7 +11,7 @@ class MenuList(APIView):
     """
     premissions=[IsAuthenticated]
     def get(self, request, format=None):
-        queryset = dacmatrix.objects.filter(subjects=request.user)
+        queryset = dacmatrix.objects.filter(subjects=request.user).order_by('dacobjects')
         serializer = MenuSerializer(queryset, many=True)
         return Response(serializer.data)
 

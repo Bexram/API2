@@ -3,6 +3,7 @@ from users.models import auth
 class dacobj(models.Model):
     dacobjects = models.CharField(verbose_name='Модули', max_length=256)
     modulehref = models.CharField(verbose_name='Ссылка', max_length=256, null=True)
+    sort=models.IntegerField(verbose_name="Порядок сортировки", unique=True, null=True)
 
     def __str__(self):
         return self.dacobjects
@@ -10,6 +11,7 @@ class dacobj(models.Model):
     class Meta:
         verbose_name_plural = 'Модули'
         verbose_name = 'Модуль'
+        ordering=['sort']
 
 
 class dacmatrix(models.Model):

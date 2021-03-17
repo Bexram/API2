@@ -9,6 +9,9 @@ from rest_framework.views import APIView
 from . import models,serializers
 import users,clients,tasks
 import datetime
+from docxcompose.composer import Composer
+from docx import Document as Document_compose
+
 
 def getQuarterStart(dt=datetime.date.today()):
     return datetime.date(dt.year, (dt.month - 1) // 3 * 3 + 1, 1)
@@ -56,5 +59,14 @@ class GenerateReport(APIView):
         doc.render(context)
         doc.save("generated_doc.docx")
         short_report = open("generated_doc.docx", 'rb')
+
+        master = Document_compose("generated_doc.docx")
+        composer = Composer(master)
+        # filename_second_docx is the name of the second docx file
+        doc2 = Document_compose("template.docx")
+        # append the doc2 into the master using composer.append function
+        composer.append(doc2)
+        # Save the combined docx with a name
+        composer.save("combined.docx")
         response = HttpResponse(FileWrapper(short_report), content_type='application/docx')
         return response

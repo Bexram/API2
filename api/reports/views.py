@@ -64,8 +64,19 @@ def ConstructDoc(data,name):
 class GenerateReport(APIView):
     def get(self, request, format=None):
         data = models.QReport.objects.filter(auto_generate=True)
-
         for report in enumerate(data):
+            new=models.ReadyReport(
+                clientobj=report[1].clientobj,
+                contact_man=report[1].contact_man,
+                userprof=report[1].userprof,
+                name=report[1].name,
+                works=report[1].works,
+                project=report[1].project,
+                dateproj=report[1].dateproj,
+                results=report[1].results,
+                rep_published=report[1].rep_published,
+            )
+            new.save()
             if report[0] == 0:
                 ConstructDoc(report[1],'generated_doc.docx')
             else:
@@ -74,11 +85,11 @@ class GenerateReport(APIView):
                 composer = Composer(master)
                 # filename_second_docx is the name of the second docx file
                 doc2 = Document_compose("generated_doc1.docx")
-
                 # append the doc2 into the master using composer.append function
                 composer.append(doc2)
                 # Save the combined docx with a name
-
-        short_report = open("generated_doc.pdf", 'rb')
-        response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
+                composer.save("generated_doc.docx")
+        short_report = open("generated_doc.docx", 'rb')
+        response = HttpResponse(FileWrapper(short_report), content_type='application/msword')
+        response['Content-Disposition'] = 'attachment; filename= "reports.docx"'
         return response

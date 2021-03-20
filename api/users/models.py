@@ -47,6 +47,7 @@ class UserProfile(models.Model):
     #email = models.CharField(verbose_name='Почта', max_length=256, null=True, blank=True)
     birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)
     passport = models.CharField(verbose_name='Паспортные данные', null=True, max_length=1024, blank=True)
+    other = models.CharField(verbose_name='Примечание', null=True, max_length=1024, blank=True)
     foto = models.ImageField(verbose_name='Изображения', upload_to='user_images', null=True, blank=True)
 
     class Meta:

@@ -5,6 +5,7 @@ from users.models import UserProfile
 class allowance(models.Model):
     userprof = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='Сотрудник')
     a_name = models.CharField(max_length=250, verbose_name="Наименование допуска")
+    a_serial=models.CharField(max_length=250, verbose_name="Серийный номер", null=True)
     a_start = models.DateField(db_index=True, verbose_name='Дата начала допуска')
     a_end = models.DateField(db_index=True, verbose_name='Дата окончания допуска')
     a_status = models.BooleanField(verbose_name='На руках', default=0)

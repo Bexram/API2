@@ -7,17 +7,13 @@ from rest_framework.views import APIView
 
 from . import models, serializers
 
-class CompanyGetList(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = models.Company.objects.all()
-    serializer_class = serializers.CompanySerializer
 
 
 class TaskGetList(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(request, self, pk, format=None):
-        queryset = models.Task.objects.filter(company=pk)
+    def get(request, self, format=None):
+        queryset = models.Task.objects.objects.all()
         serializer = serializers.ChTaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
 

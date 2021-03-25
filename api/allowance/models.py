@@ -9,7 +9,7 @@ class allowance(models.Model):
     a_start = models.DateField(db_index=True, verbose_name='Дата начала допуска')
     a_end = models.DateField(db_index=True, verbose_name='Дата окончания допуска')
     a_status = models.BooleanField(verbose_name='На руках', default=0)
-
+    a_remind=models.BooleanField(verbose_name='Автонапоминание',default=0)
     def __str__(self):
         return self.a_name
 
@@ -23,6 +23,7 @@ class itemverification(models.Model):
     v_name = models.CharField(max_length=250, verbose_name="Наименование оборудования")
     v_serial = models.CharField(max_length=250, verbose_name="Серийный номер")
     v_end = models.DateField(db_index=True, verbose_name='Поверка заканчивается')
+    v_remind = models.BooleanField(verbose_name='Автонапоминание', default=0)
 
     def __str__(self):
         return self.v_name
@@ -38,6 +39,7 @@ class insurance(models.Model):
     i_name = models.CharField(max_length=250, verbose_name="Объект страхования")
     i_start = models.DateField(db_index=True, verbose_name='Дата начала страхования')
     i_end = models.DateField(db_index=True, verbose_name='Дата окончания страхования')
+    i_remind = models.BooleanField(verbose_name='Автонапоминание', default=0)
 
     def __str__(self):
         return self.i_name

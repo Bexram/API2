@@ -26,6 +26,7 @@ class QReport(models.Model):
 class ReadyReport(models.Model):
     number=models.IntegerField(verbose_name='Номер',null=True, blank=True)
     clientobj = models.ForeignKey(clientobj, null=True, on_delete=models.CASCADE, verbose_name='Объект')
+    name = models.CharField(max_length=1024, verbose_name="Наименование", null=True)
     contact_man=models.ForeignKey(contact_man, null=True, on_delete=models.CASCADE, verbose_name='Контактное лицо')
     userprof=models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE, verbose_name='Сотрудник')
     works= models.CharField(max_length=1024, verbose_name="Работы", null=True)

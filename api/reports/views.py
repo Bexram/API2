@@ -1,5 +1,4 @@
-from wsgiref.util import FileWrapper
-from django.http import HttpResponse
+
 import os
 from docxtpl import DocxTemplate
 from rest_framework import status, generics
@@ -11,8 +10,10 @@ import users, clients, tasks
 import datetime
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
-import io
+import docx
 from django.http import FileResponse
+import requests
+import re
 
 def getQuarterStart(dt=datetime.date.today()):
     return datetime.date(dt.year, (dt.month - 1) // 3 * 3 + 1, 1)
@@ -37,6 +38,11 @@ class RepDetailList(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.QReport.objects.all()
     serializer_class = serializers.ReportSerializer
 
+
+def delete_paragraph(paragraph):
+    p = paragraph._element
+    p.getparent().remove(p)
+    p._p = p._element = None
 
 class GetRepList(APIView):
     # permission_classes = [IsAuthenticated]
@@ -98,6 +104,7 @@ class GenerateReport(APIView):
 
 class GenerateOneReport(APIView):
     def get(self, request, pk, format=None):
+        path='generated_doc.docx'
         data = models.QReport.objects.get(id=pk)
         print(data)
         new=models.ReadyReport(
@@ -111,6 +118,23 @@ class GenerateOneReport(APIView):
                 results=data.results,
                             )
         new.save()
-        ConstructDoc(data,'./files/media/generated_doc.docx')
+        ConstructDoc(data,path)
+        a_url = "https://s3.pdfconvertonline.com:443/convert/p9.php"
+        a_headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0",
+                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                     "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3", "Accept-Encoding": "gzip, deflate",
+                     "Content-Type": "multipart/form-data; boundary=---------------------------326089013215643646281334313309",
+                     "Origin": "https://www.pdfconvertonline.com", "DNT": "1", "Connection": "close",
+                     "Referer": "https://www.pdfconvertonline.com/docx-to-pdf-online.html",
+                     "Upgrade-Insecure-Requests": "1"}
 
-        return Response(u'/media/generated_doc.docx')
+        file = open(path, "rb")
+
+        Input_file = file.read()
+        a = Input_file.decode('latin-1').encode("utf-8")
+        l = str(a, 'UTF-8')
+        a_data = "-----------------------------326089013215643646281334313309\r\nContent-Disposition: form-data; name=\"localfile\"; filename=\"generated_doc.docx\"\r\nContent-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document\r\n\r\n" + l + "\r\n-----------------------------326089013215643646281334313309\r\nContent-Disposition: form-data; name=\"filetype\"\r\n\r\nPDF\r\n-----------------------------326089013215643646281334313309\r\nContent-Disposition: form-data; name=\"code\"\r\n\r\n1\r\n-----------------------------326089013215643646281334313309\r\nContent-Disposition: form-data; name=\"source\"\r\n\r\nWEENYSOFT\r\n-----------------------------326089013215643646281334313309\r\nContent-Disposition: form-data; name=\"cengine\"\r\n\r\n2\r\n-----------------------------326089013215643646281334313309--\r\n"
+        r = requests.post(a_url, headers=a_headers, data=a_data)
+        result = re.search("value.*.pdf", r.text)
+
+        return Response(u"http://s3.pdfconvertonline.com/convert/p3r68-cdx67/" + result.group(0).replace("value='", ''))

@@ -39,6 +39,7 @@ class insurance(models.Model):
     i_name = models.CharField(max_length=250, verbose_name="Объект страхования")
     i_start = models.DateField(db_index=True, verbose_name='Дата начала страхования')
     i_end = models.DateField(db_index=True, verbose_name='Дата окончания страхования')
+    i_status = models.BooleanField(verbose_name='На руках', default=0)
     i_remind = models.BooleanField(verbose_name='Автонапоминание', default=0)
 
     def __str__(self):

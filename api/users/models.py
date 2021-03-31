@@ -5,7 +5,7 @@ from django.db import models
 class auth(AbstractUser):
     role = ((1, 'Сотрудник'),
             (2, 'Клиент'))
-    status = models.IntegerField(verbose_name='Роль', choices=role, default=1, null=True, blank=True)
+    status = models.IntegerField(verbose_name='Роль', choices=role, default=1, null=True)
 
     class Meta:
         verbose_name = 'Учетная запись'

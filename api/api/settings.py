@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'checklist',
     'allowance',
     'reports',
+'django_crontab'
 
 ]
 
@@ -184,3 +185,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+CRONJOBS =[
+    ('*/1 * * * *','allowance.cron.mailsender')
+]

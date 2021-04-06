@@ -24,7 +24,7 @@ class Units(models.Model):
         return self.name
 
 class Auto(models.Model):
-    userprof = models.ForeignKey('UserProfile', null=False, on_delete=models.RESTRICT, verbose_name='Сотрудник')
+    userprof = models.ForeignKey('UserProfile', null=False, on_delete=models.CASCADE, verbose_name='Сотрудник')
     name = models.CharField(max_length=150, null=True, verbose_name='Наименование авто')
     autonum = models.CharField(max_length=150, null=True, verbose_name='Номер авто')
 

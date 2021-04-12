@@ -39,7 +39,7 @@ class TaskAddYear(APIView):
 class TaskDeleteYear(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(request, self, year,format=None):
+    def delete(request, self, year,format=None):
         queryset = models.Task.objects.filter(task_compl__lte=str(year)+'-12-31').filter(task_compl__gte=str(year)+'-01-01').delete()
         return HttpResponse(status=200)
 

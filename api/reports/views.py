@@ -82,8 +82,8 @@ def merger(files,output):
 class GenerateReport(APIView):
     def get(self, request, format=None):
         data = models.QReport.objects.filter(auto_generate=True)
-        docpath='./generated_doc.docx'
-        output='./report.pdf'
+        docpath='./files/media/generated_doc.docx'
+        output="./files/media/output.pdf"
         for report in enumerate(data):
             new=models.ReadyReport(
                 clientobj=report[1].clientobj,
@@ -101,16 +101,15 @@ class GenerateReport(APIView):
         for filename in os.listdir('./files/media'):
             if filename.endswith('.pdf'):
                 pdfFiles.append('./files/media/'+filename)
-        print(pdfFiles)
         merger(pdfFiles,output)
         for file in pdfFiles:
             os.remove(file)
-        return FileResponse(open(output, 'rb'))
+        return Response('files/media/output.pdf')
 
 class GenerateOneReport(APIView):
     def get(self, request, pk, format=None):
-        path='./generated_doc.docx'
-        output="./output.pdf"
+        path='./files/media/generated_doc.docx'
+        output="./files/media/output.pdf"
         data = models.QReport.objects.get(id=pk)
         new=models.ReadyReport(
                 clientobj=data.clientobj,
@@ -124,4 +123,4 @@ class GenerateOneReport(APIView):
                             )
         new.save()
         ConstructDoc(data,path,output)
-        return FileResponse(open(output, 'rb'))
+        return Response('files/media/output.pdf')

@@ -97,7 +97,7 @@ class GenerateReport(APIView):
                             )
             new.save()
             ConstructDoc(report[1],docpath,'./files/media/file'+str(report[0])+'.pdf')
-        if data.len() > 1:
+        if data.count() > 1:
             pdfFiles = []
             for filename in os.listdir('./files/media'):
                 if filename.endswith('.pdf'):
@@ -106,9 +106,9 @@ class GenerateReport(APIView):
             for file in pdfFiles:
                 os.remove(file)
             return Response('/media/output.pdf')
-        if data.len() == 1:
+        if data.count() == 1:
             return Response('/media/file0.pdf')
-        if data.len() == 0:
+        if data.count() == 0:
             return Response('null')
 
 class GenerateOneReport(APIView):

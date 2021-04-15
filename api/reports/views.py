@@ -97,14 +97,19 @@ class GenerateReport(APIView):
                             )
             new.save()
             ConstructDoc(report[1],docpath,'./files/media/file'+str(report[0])+'.pdf')
-        pdfFiles = []
-        for filename in os.listdir('./files/media'):
-            if filename.endswith('.pdf'):
-                pdfFiles.append('./files/media/'+filename)
-        merger(pdfFiles,output)
-        for file in pdfFiles:
-            os.remove(file)
-        return Response('files/media/output.pdf')
+        if data.len() > 1:
+            pdfFiles = []
+            for filename in os.listdir('./files/media'):
+                if filename.endswith('.pdf'):
+                    pdfFiles.append('./files/media/'+filename)
+            merger(pdfFiles,output)
+            for file in pdfFiles:
+                os.remove(file)
+            return Response('/media/output.pdf')
+        if data.len() == 1:
+            return Response('/media/file0.pdf')
+        if data.len() == 0:
+            return Response('null')
 
 class GenerateOneReport(APIView):
     def get(self, request, pk, format=None):
@@ -123,4 +128,4 @@ class GenerateOneReport(APIView):
                             )
         new.save()
         ConstructDoc(data,path,output)
-        return Response('files/media/output.pdf')
+        return Response('/media/output.pdf')

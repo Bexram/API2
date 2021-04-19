@@ -37,7 +37,7 @@ class GetRepList(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,format=None):
         queryset = models.QReport.objects.all()
-        serializer_class = serializers.ReportSerializer
+        serializer_class = serializers.ReportSerializer(queryset,many=True)
         return Response(serializer_class.data)
 
 def delete_paragraph(paragraph):
@@ -49,16 +49,16 @@ def delete_paragraph(paragraph):
 
 #работа с сформированными отчетами
 class GetReadyRepList(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     def get(request, self, format=None):
         queryset = models.ReadyReport.objects.all()
-        serializer = serializers.GetReportSerializer(queryset, many=True)
-        return Response(serializer.data)
+        serializer_class = serializers.GetReadyReportSerializer(queryset, many=True)
+        return Response(serializer_class.data)
 
 class ReadyRepDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = models.ReadyReport.objects.all()
-    serializer_class = serializers.ReportSerializer
+    serializer_class = serializers.ReadyReportSerializer
 
 class PrintReadyRep(APIView):
     permission_classes = [IsAuthenticated]

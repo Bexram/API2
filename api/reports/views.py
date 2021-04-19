@@ -38,7 +38,7 @@ class GetRepList(APIView):
     def get(self,format=None):
         queryset = models.QReport.objects.all()
         serializer_class = serializers.ReportSerializer
-        return Response(serializer.data)
+        return Response(serializer_class.data)
 
 def delete_paragraph(paragraph):
     p = paragraph._element

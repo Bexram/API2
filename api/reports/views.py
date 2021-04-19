@@ -37,7 +37,7 @@ class GetRepList(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,format=None):
         queryset = models.QReport.objects.all()
-        serializer_class = serializers.ReportSerializer(queryset,many=True)
+        serializer_class = serializers.GetReportSerializer(queryset,many=True)
         return Response(serializer_class.data)
 
 def delete_paragraph(paragraph):

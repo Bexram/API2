@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from . import models, serializers
 import users, clients, tasks
 import datetime
-from django.http import FileResponse
+from rest_framework.response import Response
 import os
 import subprocess
 from PyPDF2 import PdfFileMerger
@@ -24,28 +24,62 @@ def getQuarterEnd(dt=datetime.date.today()):
 
 
 class RepList(generics.ListCreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = models.QReport.objects.all()
     serializer_class = serializers.ReportSerializer
-
 
 class RepDetailList(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = models.QReport.objects.all()
     serializer_class = serializers.ReportSerializer
 
+class GetRepList(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,format=None):
+        queryset = models.QReport.objects.all()
+        serializer_class = serializers.ReportSerializer
+        return Response(serializer.data)
 
 def delete_paragraph(paragraph):
     p = paragraph._element
     p.getparent().remove(p)
     p._p = p._element = None
 
-class GetRepList(APIView):
-    # permission_classes = [IsAuthenticated]
+
+
+#работа с сформированными отчетами
+class GetReadyRepList(APIView):
+    permission_classes = [IsAuthenticated]
     def get(request, self, format=None):
-        queryset = models.QReport.objects.all()
+        queryset = models.ReadyReport.objects.all()
         serializer = serializers.GetReportSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class ReadyRepDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = models.ReadyReport.objects.all()
+    serializer_class = serializers.ReportSerializer
+
+class PrintReadyRep(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, pk, format=None):
+        path = './files/media/generated_doc.docx'
+        output = "./files/media/output.pdf"
+        data = models.ReadyReport.objects.get(id=pk)
+        new = models.ReadyReport(
+            clientobj=data.clientobj,
+            contact_man=data.contact_man,
+            userprof=data.userprof,
+            name=data.name,
+            works=data.works,
+            project=data.project,
+            dateproj=data.dateproj,
+            results=data.results,
+        )
+        new.save()
+        ConstructDoc(data, path, output)
+        return Response('/media/output.pdf')
+
 
 def ConstructDoc(data,docpath,pdfpath):
     doc = DocxTemplate(os.path.abspath('reports/template.docx'))
@@ -80,6 +114,7 @@ def merger(files,output):
 
 
 class GenerateReport(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         data = models.QReport.objects.filter(auto_generate=True)
         docpath='./files/media/generated_doc.docx'
@@ -112,6 +147,7 @@ class GenerateReport(APIView):
             return Response('null')
 
 class GenerateOneReport(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, pk, format=None):
         path='./files/media/generated_doc.docx'
         output="./files/media/output.pdf"

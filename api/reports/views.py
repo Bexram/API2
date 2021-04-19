@@ -66,17 +66,6 @@ class PrintReadyRep(APIView):
         path = './files/media/generated_doc.docx'
         output = "./files/media/output.pdf"
         data = models.ReadyReport.objects.get(id=pk)
-        new = models.ReadyReport(
-            clientobj=data.clientobj,
-            contact_man=data.contact_man,
-            userprof=data.userprof,
-            name=data.name,
-            works=data.works,
-            project=data.project,
-            dateproj=data.dateproj,
-            results=data.results,
-        )
-        new.save()
         ConstructDoc(data, path, output)
         return Response('/media/output.pdf')
 

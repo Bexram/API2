@@ -23,14 +23,14 @@ class TaskGetList(APIView):
 class TaskAddYear(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(request, self, format=None):
-        year=datetime.datetime.now().year
-        queryset = models.Task.objects.filter(task_compl__lte=str(year)+'-12-31').filter(task_compl__gte=str(year)+'-01-01')
+    def post(request, self,year, format=None):
+        nowyear=datetime.datetime.now().year
+        queryset = models.Task.objects.filter(task_compl__lte=str(nowyear)+'-12-31').filter(task_compl__gte=str(nowyear)+'-01-01')
         for task in enumerate(queryset):
             new=models.Task(
                 Task_name=task[1].Task_name,
                 Task_other=task[1].Task_other,
-                task_compl=task[1].task_compl.replace(year=task[1].task_compl.year+1),
+                task_compl=task[1].task_compl.replace(year=year),
                 task_status=0
             )
             new.save()

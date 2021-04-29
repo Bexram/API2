@@ -5,6 +5,7 @@ class clients(models.Model):
     auth=models.OneToOneField(auth, on_delete=models.CASCADE, verbose_name='Учетная запись')
     userprof=models.ForeignKey(UserProfile,on_delete=models.RESTRICT, null=True,  verbose_name='Закрепленный сотрудник')
     client_name = models.CharField(max_length=250, verbose_name="Краткое наименование")
+    client_number = models.CharField(max_length=250, verbose_name="Номер клиента", null=True, blank=True)
     client_fullname = models.CharField(max_length=250, verbose_name="Полное наименование", null=True, blank=True)
     client_inn = models.CharField(max_length=250, verbose_name="ИНН", null=True, blank=True)
     client_ogrn = models.CharField(max_length=250, verbose_name="ОГРН", null=True, blank=True)

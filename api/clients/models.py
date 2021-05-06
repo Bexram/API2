@@ -15,6 +15,7 @@ class clients(models.Model):
     client_telephone = models.CharField(max_length=1024, verbose_name="Телефон", null=True, blank=True)
     client_mail = models.CharField(max_length=1024, verbose_name="Почта", null=True, blank=True)
     client_site = models.CharField(max_length=250, verbose_name="Сайт", null=True, blank=True)
+    client_activity = models.CharField(max_length=250, verbose_name="Вид деятельности", null=True, blank=True)
     def __str__(self):
         return self.client_name
 

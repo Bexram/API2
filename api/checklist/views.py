@@ -15,7 +15,7 @@ class TaskGetList(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(request, self, format=None):
-        queryset = models.Task.objects.all()
+        queryset = models.Task.objects.all().order_by('id')
         serializer = serializers.ChTaskGetSerializer(queryset, many=True)
         return Response(serializer.data)
 
